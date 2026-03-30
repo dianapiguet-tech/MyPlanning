@@ -1,0 +1,98 @@
+<!-- =================================================================
+     MyPlanning App
+     File: index.html
+     What it does: The main (and only) page of the app — Quick Capture MVP
+     Author: Diana (built with Claude)
+     Version: 1.0 — Base Camp 1
+     ================================================================= -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <!-- viewport: makes the app look correct on mobile screens -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- PWA: tells the browser this is an installable app -->
+    <meta name="theme-color" content="#059669">
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Icons for home screen (iOS and Android) -->
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+    <title>MyPlanning</title>
+
+    <!-- Our stylesheet: all visual decisions live here -->
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+
+  <body>
+
+    <!-- ── HEADER ─────────────────────────────────────────────────── -->
+    <header class="app-header">
+      <h1 class="app-title">MyPlanning</h1>
+      <span class="task-count" id="taskCount">0 tasks</span>
+    </header>
+
+    <!-- ── CAPTURE AREA ───────────────────────────────────────────── -->
+    <!-- This is where the user types a new task -->
+    <section class="capture-section">
+      <div class="capture-box">
+        <input
+          type="text"
+          id="taskInput"
+          class="task-input"
+          placeholder="Capture a task…"
+          autocomplete="off"
+        />
+        <!-- The add button: triggers saveTask() in app.js -->
+        <button class="add-btn" id="addBtn" onclick="saveTask()">
+          <span class="add-icon">+</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ── TASK LIST ───────────────────────────────────────────────── -->
+    <!-- Tasks appear here, newest at top, draggable to reorder -->
+    <main class="task-section">
+
+      <!-- Empty state: shown when there are no tasks yet -->
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">🌿</div>
+        <p class="empty-text">Nothing captured yet.</p>
+        <p class="empty-sub">Type above and press + or Enter.</p>
+      </div>
+
+      <!-- The list itself: app.js fills this with task cards -->
+      <ul class="task-list" id="taskList">
+        <!-- Task cards are injected here by JavaScript -->
+      </ul>
+
+    </main>
+
+    <!-- ── FOOTER ─────────────────────────────────────────────────── -->
+    <footer class="app-footer">
+      <button class="footer-btn active" id="btnCapture">Capture</button>
+      <!-- Future panels will appear here as we build Base Camps 2–5 -->
+      <button class="footer-btn disabled" disabled>Triage</button>
+      <button class="footer-btn disabled" disabled>Week</button>
+      <button class="footer-btn disabled" disabled>Day</button>
+      <button class="footer-btn disabled" disabled>Focus</button>
+    </footer>
+
+    <!-- Our JavaScript: all behaviour lives here -->
+    <script src="js/app.js"></script>
+
+    <!-- Register the Service Worker (enables offline + installable) -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+          .then(() => console.log('MyPlanning: Service Worker registered ✓'))
+          .catch(err => console.log('Service Worker error:', err));
+      }
+    </script>
+
+  </body>
+
+</html>

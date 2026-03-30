@@ -1,0 +1,355 @@
+/* =================================================================
+   MyPlanning App
+   File: css/style.css
+   What it does: All visual decisions — colours, layout, typography
+   Author: Diana (built with Claude)
+   Version: 1.0 — Base Camp 1
+   ================================================================= */
+
+
+/* ── DESIGN TOKENS ────────────────────────────────────────────────
+   These are the colours and sizes we use everywhere.
+   Change one value here → it changes across the whole app.
+   This is called "CSS custom properties" (or variables).          */
+
+:root {
+  /* Colours */
+  --color-bg:           #f0fdf4;   /* very light green background   */
+  --color-surface:      #ffffff;   /* white cards and panels        */
+  --color-primary:      #059669;   /* emerald green — main accent   */
+  --color-primary-dark: #047857;   /* darker green for hover states */
+  --color-primary-soft: #d1fae5;   /* pale green for subtle fills   */
+  --color-text:         #1a2e22;   /* near-black text               */
+  --color-text-muted:   #6b7280;   /* grey for secondary text       */
+  --color-border:       #d1fae5;   /* soft green border             */
+  --color-danger:       #ef4444;   /* red for delete actions        */
+  --color-done:         #a7f3d0;   /* soft green for completed mark */
+
+  /* Typography */
+  --font-main:    'Georgia', serif;         /* warm, calm, readable  */
+  --font-ui:      'Trebuchet MS', sans-serif; /* clean UI elements   */
+
+  /* Spacing — everything is a multiple of 4px */
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  32px;
+
+  /* Shape */
+  --radius-sm:  8px;
+  --radius-md:  14px;
+  --radius-lg:  20px;
+  --radius-full: 999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(5, 150, 105, 0.08);
+  --shadow-md: 0 4px 16px rgba(5, 150, 105, 0.12);
+}
+
+
+/* ── RESET & BASE ─────────────────────────────────────────────────
+   Remove browser defaults so we start with a clean slate.         */
+
+*, *::before, *::after {
+  box-sizing: border-box;   /* padding doesn't add to element size */
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;          /* prevent page scrolling — app scrolls internally */
+}
+
+body {
+  font-family: var(--font-ui);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  display: flex;
+  flex-direction: column;    /* stack header, content, footer vertically */
+  max-width: 480px;          /* comfortable width on large screens too */
+  margin: 0 auto;            /* centre on desktop */
+  height: 100dvh;            /* dvh = dynamic viewport height, correct on mobile */
+}
+
+
+/* ── HEADER ───────────────────────────────────────────────────────  */
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  background: var(--color-surface);
+  border-bottom: 1.5px solid var(--color-border);
+  flex-shrink: 0;            /* header never shrinks */
+}
+
+.app-title {
+  font-family: var(--font-main);
+  font-size: 1.4rem;
+  font-weight: normal;
+  color: var(--color-primary);
+  letter-spacing: -0.02em;
+}
+
+.task-count {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  background: var(--color-primary-soft);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
+}
+
+
+/* ── CAPTURE SECTION ──────────────────────────────────────────────  */
+
+.capture-section {
+  padding: var(--space-md) var(--space-lg);
+  background: var(--color-surface);
+  border-bottom: 1.5px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.capture-box {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.task-input {
+  flex: 1;                   /* input takes all available space */
+  padding: var(--space-sm) var(--space-md);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  color: var(--color-text);
+  background: var(--color-bg);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+/* When the input is focused (user is typing) */
+.task-input:focus {
+  border-color: var(--color-primary);
+  background: var(--color-surface);
+}
+
+.task-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.add-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s, transform 0.1s;
+  box-shadow: var(--shadow-md);
+}
+
+.add-btn:hover {
+  background: var(--color-primary-dark);
+}
+
+/* Small press animation when tapping */
+.add-btn:active {
+  transform: scale(0.92);
+}
+
+
+/* ── TASK SECTION ─────────────────────────────────────────────────  */
+
+.task-section {
+  flex: 1;                   /* takes all remaining vertical space */
+  overflow-y: auto;          /* scrollable when tasks overflow     */
+  padding: var(--space-md) var(--space-lg);
+}
+
+
+/* ── EMPTY STATE ──────────────────────────────────────────────────  */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: var(--space-sm);
+  opacity: 0.6;
+}
+
+.empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-sm);
+}
+
+.empty-text {
+  font-family: var(--font-main);
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
+}
+
+.empty-sub {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+
+/* ── TASK LIST ────────────────────────────────────────────────────  */
+
+.task-list {
+  list-style: none;          /* remove default bullet points */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding-bottom: var(--space-lg);
+}
+
+
+/* ── TASK CARD ────────────────────────────────────────────────────  */
+
+.task-card {
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  box-shadow: var(--shadow-sm);
+  cursor: grab;              /* shows drag cursor on desktop */
+  transition: box-shadow 0.2s, opacity 0.2s, transform 0.2s;
+  user-select: none;         /* prevents text selection while dragging */
+}
+
+/* Card being dragged */
+.task-card.dragging {
+  opacity: 0.4;
+  transform: scale(0.98);
+  box-shadow: none;
+}
+
+/* Card when dragged over (drop target) */
+.task-card.drag-over {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+}
+
+/* Completed task card */
+.task-card.done {
+  opacity: 0.5;
+}
+
+/* The drag handle — the ⠿ icon on the left */
+.drag-handle {
+  color: var(--color-text-muted);
+  font-size: 1.1rem;
+  cursor: grab;
+  flex-shrink: 0;
+  padding: 0 var(--space-xs);
+  touch-action: none;        /* required for touch drag to work */
+}
+
+/* The checkbox */
+.task-check {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--color-primary);  /* colours the checkbox green */
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* The task text */
+.task-text {
+  flex: 1;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+/* Strike-through when done */
+.task-card.done .task-text {
+  text-decoration: line-through;
+  color: var(--color-text-muted);
+}
+
+/* The delete button — hidden until card is hovered/touched */
+.delete-btn {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: var(--space-xs);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  opacity: 0;                /* invisible by default */
+  transition: opacity 0.15s, color 0.15s;
+}
+
+/* Show delete button when hovering the card */
+.task-card:hover .delete-btn {
+  opacity: 1;
+}
+
+/* Always show on touch devices (no hover) */
+@media (hover: none) {
+  .delete-btn {
+    opacity: 1;
+  }
+}
+
+.delete-btn:hover {
+  color: var(--color-danger);
+}
+
+
+/* ── FOOTER NAVIGATION ────────────────────────────────────────────  */
+
+.app-footer {
+  display: flex;
+  background: var(--color-surface);
+  border-top: 1.5px solid var(--color-border);
+  padding: var(--space-sm) var(--space-xs);
+  padding-bottom: max(var(--space-sm), env(safe-area-inset-bottom)); /* iPhone notch */
+  gap: var(--space-xs);
+  flex-shrink: 0;
+}
+
+.footer-btn {
+  flex: 1;
+  padding: var(--space-sm) var(--space-xs);
+  border: none;
+  background: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+/* Active panel tab */
+.footer-btn.active {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-weight: bold;
+}
+
+/* Future panels not yet built */
+.footer-btn.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
